@@ -25,9 +25,9 @@ const buttonRemove = document.querySelector(".button-remove");
 const itemsContainer = document.querySelector(".items");
 
 document.addEventListener(`DOMContentLoaded`, () => {
-  if (localStorage.todos !== undefined) {
-    todos = JSON.parse(localStorage.todos);
-  } else todos = [];
+  localStorage.todos !== undefined
+    ? (todos = JSON.parse(localStorage.todos))
+    : (todos = []);
   updateItems();
 });
 
@@ -57,7 +57,11 @@ dropdown.addEventListener("change", () => {
 
 function updateItems() {
   itemsContainer.innerHTML = "";
-  todos.forEach((todo, index) => renderAndAppend(todo, index));
+  todos.map((todo, index) => renderAndAppend(todo, index));
+}
+
+function syncLocalStorage() {
+  localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 function renderAndAppend(todo, index) {
@@ -72,25 +76,30 @@ function renderAndAppend(todo, index) {
     todo.title.includes(`${searchInput.value}`)
   ) {
     const item = document.createElement("div");
-    const checkbox = document.createElement("input");
+    const checkbox = document.createElement("button");
     const title = document.createElement("input");
     const desc = document.createElement("input");
-    const date = document.createElement("a");
-    const done = document.createElement("input");
+    const date = document.createElement("div");
+    const done = document.createElement("button");
     item.classList.add("item");
     item.id = `${index}`;
-    checkbox.type = "checkbox";
-    checkbox.checked = todo.isChecked;
+    checkbox.innerText = "•";
+    todo.isChecked ? checkbox.classList.add("selected") : null;
     title.value = todo.title;
+    title.classList.add("title-text");
+    title.type = "text";
     desc.value = todo.desc;
+    desc.classList.add("desc-text");
+    desc.type = "text";
     date.innerText = todo.date;
-    done.type = "checkbox";
+    date.classList.add("date-text");
+    done.innerText = "✓";
     done.checked = todo.isDone;
-    item.appendChild(checkbox);
+    todo.isDone ? item.classList.add("done") : null;
+    item.appendChild(done);
     item.appendChild(title);
     item.appendChild(desc);
-    item.appendChild(done);
-    item.appendChild(document.createElement("br"));
+    item.appendChild(checkbox);
     item.appendChild(date);
     itemsContainer.appendChild(item);
     title.addEventListener("change", () => {
@@ -101,17 +110,15 @@ function renderAndAppend(todo, index) {
       todo.desc = desc.value;
       syncLocalStorage();
     });
-    checkbox.addEventListener("change", () => {
-      todo.isChecked = checkbox.checked;
+    checkbox.addEventListener("click", () => {
+      todo.isChecked = todo.isChecked ? false : true;
+      checkbox.classList.toggle("selected");
       syncLocalStorage();
     });
-    done.addEventListener("change", () => {
-      todo.isDone = done.checked;
+    done.addEventListener("click", () => {
+      todo.isDone = todo.isDone ? false : true;
+      item.classList.toggle("done");
       syncLocalStorage();
     });
   }
-}
-
-function syncLocalStorage() {
-  localStorage.setItem("todos", JSON.stringify(todos));
 }
