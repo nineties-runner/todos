@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet" />
+    <title>Todo List</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="menu box">
+        <input type="text" class="text-search" placeholder="Search for item" />
+        <select class="dropdown">
+          <option value="all">All</option>
+          <option value="done">Done</option>
+          <option value="deleted">Deleted</option>
+        </select>
+      </div>
+      <div class="creation box">
+        <input type="text" class="text-add-title" placeholder="Enter title" />
+        <input type="text" class="text-add-desc" placeholder="Enter description" />
+        <button class="button-add">Add</button>
+        <button class="button-remove">Remove selected</button>
+      </div>
+      <div class="items box"></div>
+    </div>
+  </body>
+</html>
